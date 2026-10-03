@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 简易启动图标：蓝色圆角底 + 黄蓝双色蟒蛇抽象符号 -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:pathData="M0,0h108v108h-108z"
+        android:fillColor="#3067F0" />
+    <path
+        android:pathData="M54,20
+            C36,20 26,30 26,43
+            C26,55 32,62 42,65
+            L42,59
+            C35,56 31,51 31,43
+            C31,34 39,26 54,26
+            C69,26 77,34 77,43
+            C77,51 73,56 66,59
+            L66,65
+            C76,62 82,55 82,43
+            C82,30 72,20 54,20
+            Z"
+        android:fillColor="#FFD43B" />
+    <path
+        android:pathData="M46,74
+            C44,78 44,81 46,84
+            L51,84
+            C49,81 49,78 51,74
+            Z"
+        android:fillColor="#FFD43B" />
+    <path
+        android:pathData="M54,70
+            C53,70 52,71 52,72
+            C52,73 53,74 54,74
+            C55,74 56,73 56,72
+            C56,71 55,70 54,70
+            Z"
+        android:fillColor="#FFD43B" />
+    <path
+        android:pathData="M62,74
+            C60,78 60,81 62,84
+            L57,84
+            C59,81 59,78 57,74
+            Z"
+        android:fillColor="#FFD43B" />
+</vector>

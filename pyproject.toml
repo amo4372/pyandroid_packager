@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyandroid-packager"
+version = "0.1.0"
+description = "Python Android 通用套壳打包器：内置官方 CPython 3.14 + SDL2/pygame-ce + OpenGL ES，一键生成 Android Studio 工程并打包任意 Python 项目"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [{ name = "pyandroid-packager" }]
+keywords = ["android", "python", "apk", "sdl2", "pygame", "opengl", "gles"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Build Tools",
+]
+
+[project.scripts]
+pa = "pyandroid_packager.cli:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+packages = ["pyandroid_packager"]
+
+[tool.setuptools.package-data]
+pyandroid_packager = ["template/**/*"]

@@ -1,0 +1,15 @@
+# Gradle / Android Studio
+.gradle/
+build/
+local.properties
+.idea/
+*.iml
+.DS_Store
+
+# 本项目由 scripts/prepare.py 自动生成的部分
+app/libs/
+app/src/main/jniLibs/
+app/src/main/cpp/python_include/
+app/src/main/assets/python/
+app/src/main/assets/wheels/
+third_party/

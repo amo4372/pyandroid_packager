@@ -1,0 +1,91 @@
+plugins {
+    id 'com.android.application'
+}
+
+// Python 版本（与 scripts/prepare.py 中保持一致）
+def pythonVersion = '3.14'
+
+// 项目后端类型：auto(运行时检测) / sdl2 / gles / mixed / console
+// 用法：./gradlew assembleDebug -PpaBackend=gles
+def paBackend = project.findProperty('paBackend') ?: 'auto'
+
+// 应用 ID：默认 com.example.pythonandroid；可用 -PpaAppId=xxx 覆盖（如同时装多个测试包）
+def paAppId = project.findProperty('paAppId') ?: 'com.example.pythonandroid'
+
+android {
+    namespace 'com.example.pythonandroid'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId paAppId
+        minSdk 26          // API 26+：Java 侧用到 java.nio.file
+        targetSdk 35
+        versionCode 1
+        versionName "1.0"
+
+        // 官方 Android 预编译包只发布 aarch64(arm64-v8a) 与 x86_64
+        ndk {
+            abiFilters 'arm64-v8a', 'x86_64'
+            version "27.0.12077973"
+        }
+
+        externalNativeBuild {
+            cmake {
+                arguments '-DPYTHON_VERSION=' + pythonVersion
+            }
+        }
+
+        // 后端类型注入 BuildConfig（Java 侧写 filesDir/backend.txt 供 native 读）
+        buildConfigField "String", "PA_BACKEND", "\"${paBackend}\""
+    }
+
+    buildTypes {
+        debug {
+            // DEBUG 包：保留完整诊断界面 + 详细日志
+            debuggable true
+        }
+        release {
+            // RELEASE 包：精简错误提示（不显示详细日志），可尝试继续运行
+            debuggable false
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // 本机验证用 debug 签名；正式发布请替换为自己的 keystore
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path 'src/main/cpp/CMakeLists.txt'
+        }
+    }
+
+    packagingOptions {
+        jniLibs {
+            // 等价于 android:extractNativeLibs="true"：
+            // 把 .so 真正解压到 nativeLibraryDir，保证 dlopen / ctypes 能按路径加载
+            useLegacyPackaging = true
+        }
+    }
+
+    // 显式覆盖 AAPT2 的 assets 忽略规则：
+    // 默认配置会漏掉以 "_" 开头的目录（如 zipfile/_path、pygame/_sdl2），
+    // 这里确保它们与普通文件一样被打包进 APK。
+    aaptOptions {
+        ignoreAssetsPattern "!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~"
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+}
+
+dependencies {
+    // 精简版：不引入任何第三方依赖 / AndroidX，APK 更小、构建更快
+}
